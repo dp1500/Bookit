@@ -1,0 +1,32 @@
+role = defender
+
+goal hua
+
+1/(distance from ideal position) * reward (1)
+
+
+
+0.02*1 (normalisze)= 0.2
+
+
+goal khaya
+
+penalty * (distance)
+
+player_behaviour.cs
+pass,move
+
+player.cs
+
+
+reward functions
+
+if ball posseion
+ & we move to forward zones 
+    teams get shared reward per zone
+        *which players get kitna reward is to be seen
+
+based on starting formations we can have ideal positions for plaeyrs ( uske basis pe reward and penalty)
+
+based on where the ball is lost on field uske basis pe penalty (if lost in zone 1 bhari penalty)  (where ball is lost will be the zone where opponent player picks the ball not from where the pass was made)
+
