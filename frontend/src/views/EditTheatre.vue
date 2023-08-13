@@ -98,6 +98,12 @@
   <!-- @click="$emit('Update-Theatre')" -->
   
 </form>
+
+<div v-if="response_message"
+              class= "alert alert-warning alert-dismissible fade show mt-2"
+              role="alert">
+                <strong> {{ response_message }} </strong>
+        </div>
     </div>
     </div>
   </template>
@@ -110,45 +116,48 @@
       errorMessage: "",
       screenCount: 0,
       screenCapacities: [],
+      response_message: '',
       };
     },
     mounted() {
     const theatreId = this.$route.params.theatre_id;
     const token = localStorage.getItem('access_token');
 
-    fetch(`http://127.0.0.1:5000/api/TheatreData/${theatreId}`, {
+    const headers = {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+    };
+
+    const fetchTheatreData = fetch(`http://127.0.0.1:5000/api/TheatreData/${theatreId}`, {
       method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
-      }
+      headers: headers
     })
-      .then(response => response.json())
+      .then(response => response.json());
+
+    const fetchScreenData = fetchTheatreData
       .then(data => {
         this.theatre = data;
         this.screenCount = this.theatre.screens;
-        this.screenCapacities = Array(this.screenCount).fill(0);  // Initialize screenCapacities with zeroes
+        this.screenCapacities = [];  // Initialize screenCapacities as an empty array
 
-        // Fetch screen data
         return fetch(`http://127.0.0.1:5000/api/ScreensApi/${theatreId}`, {
           method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
-          }
+          headers: headers
         });
       })
-      .then(response => response.json())
-      .then(screenData => {
-        // Update screenCapacities with the actual capacities
+      .then(response => response.json());
+
+    Promise.all([fetchTheatreData, fetchScreenData])
+      .then(([theatre, screenData]) => {
         screenData.forEach((screen, index) => {
-          this.screenCapacities[index] = screen.screen_capacity;
+          this.$set(this.screenCapacities, index, screen.screen_capacity);  // Use Vue.set() to ensure reactivity
         });
       })
       .catch(error => {
         console.error(error);
       });
-},
+}
+,
     methods: {
     updateTheatreData() {
       if(!this.theatre || this.screenCapacities.includes(null)) {

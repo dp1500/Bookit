@@ -61,18 +61,12 @@ class Movies(db.Model):
     description = db.Column(db.String)
 
     releaseDate = db.Column(db.String)
-    
-    total_rating = db.Column(db.Integer)
-    number_of_ratings = db.Column(db.Integer)
 
     rating = db.Column(db.Float)
 
     genres = db.Column(db.String)  # Storing genres as a comma-separated string
 
     image_url = db.Column(db.String)
-
-    likes = db.Column(db.Integer)
-    n_comments = db.Column(db.Integer)
 
 
 class Shows(db.Model):

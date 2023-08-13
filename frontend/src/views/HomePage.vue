@@ -75,7 +75,7 @@ import CityPopup from '../components/CityPopup.vue';
         selectedCity: localStorage.getItem('selectedCity') || null,
         movies: [],
 
-        cities: ['Delhi NCR', 'Mumbai', 'Pune', 'Kolkata', 'Bangalore', 'Hyderabad'],
+        cities: ['Delhi NCR', 'Mumbai', 'Pune', 'Kolkata', 'Bangalore', 'Hyderabad', 'Chennai'],
 
         selectedGenre: null,
         selectedRating: null,
